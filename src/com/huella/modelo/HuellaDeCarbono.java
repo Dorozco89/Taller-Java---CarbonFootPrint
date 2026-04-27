@@ -3,12 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.huella.modelo;
-
 /**
  *
  * @author USUARIO
- */
+ */ 
+package com.huella.modelo;
+
 public interface HuellaDeCarbono {
-    
+
+    double calcularHuellaCarbono();
+
+    String obtenerDescripcion();
 }
