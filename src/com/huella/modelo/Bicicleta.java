@@ -3,12 +3,38 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.huella.modelo;
-
 /**
  *
  * @author USUARIO
  */
-public class Bicicleta {
-    
+package com.huella.modelo;
+
+public class Bicicleta extends FuenteEmision {
+
+    private double kilometrosAnuales;
+
+    public Bicicleta(String nombre, double kilometrosAnuales) {
+        super(nombre);
+        this.kilometrosAnuales = kilometrosAnuales;
+    }
+
+    public double getKilometrosAnuales() {
+        return kilometrosAnuales;
+    }
+
+    public void setKilometrosAnuales(double kilometrosAnuales) {
+        this.kilometrosAnuales = kilometrosAnuales;
+    }
+
+    @Override
+    public double calcularHuellaCarbono() {
+        return 0.0;
+    }
+
+    @Override
+    public String obtenerDescripcion() {
+        return super.obtenerDescripcion()
+                + " | Tipo: Bicicleta"
+                + " | Kilómetros Anuales: " + kilometrosAnuales;
+    }
 }
