@@ -9,6 +9,6 @@ package com.huella.modelo;
  *
  * @author USUARIO
  */
-public class FuenteEmision {
+public abstract class FuenteEmision {
     
 }
