@@ -9,10 +9,7 @@
  */
 package com.huella.app;
 
-import com.huella.modelo.HuellaDeCarbono;
-import com.huella.modelo.Edificio;
-import com.huella.modelo.Coche;
-import com.huella.modelo.Bicicleta;
+import com.huella.modelo.*;
 import com.huella.servicio.GestorArchivos;
 
 import java.io.IOException;
@@ -21,7 +18,7 @@ import java.util.List;
 
 public class AplicacionHuellaCarbono {
 
-    private final List<HuellaDeCarbono> fuentes;
+    private List<HuellaDeCarbono> fuentes;
     private final GestorArchivos gestorArchivos;
 
     public AplicacionHuellaCarbono() {
@@ -35,7 +32,7 @@ public class AplicacionHuellaCarbono {
         fuentes.add(new Bicicleta("Bicicleta Urbana", 3000));
     }
 
-    public void calcularYMostrarHuellas() {
+    public void mostrarHuellas() {
         fuentes.stream().map((fuente) -> {
             System.out.println(fuente.obtenerDescripcion());
             return fuente;
@@ -43,16 +40,25 @@ public class AplicacionHuellaCarbono {
             System.out.println("Huella de Carbono: " + fuente.calcularHuellaCarbono());
             return fuente;
         }).forEachOrdered((_item) -> {
-            System.out.println("--------------------------------------------");
+            System.out.println("--------------------------------------");
         });
     }
 
-    public void guardarResultados(String ruta) {
+    public void guardarObjetos(String ruta) {
         try {
-            gestorArchivos.guardarHuellas(ruta, fuentes);
-            System.out.println("Resultados guardados correctamente en: " + ruta);
+            gestorArchivos.guardarObjetos(ruta, fuentes);
+            System.out.println("Objetos guardados correctamente.");
         } catch (IOException e) {
-            System.out.println("Error al guardar los resultados: " + e.getMessage());
+            System.out.println("Error al guardar: " + e.getMessage());
+        }
+    }
+
+    public void cargarObjetos(String ruta) {
+        try {
+            fuentes = gestorArchivos.leerObjetos(ruta);
+            System.out.println("Objetos cargados correctamente.");
+        } catch (IOException e) {
+            System.out.println("Error al leer: " + e.getMessage());
         }
     }
 
@@ -60,10 +66,18 @@ public class AplicacionHuellaCarbono {
 
         AplicacionHuellaCarbono app = new AplicacionHuellaCarbono();
 
-        app.inicializarDatos();
-        app.calcularYMostrarHuellas();
+        String ruta = "objetos_huella.txt";
 
-        String rutaArchivo = "resultados_huella_carbono.txt";
-        app.guardarResultados(rutaArchivo);
+        app.inicializarDatos();
+
+        System.out.println("=== DATOS ORIGINALES ===");
+        app.mostrarHuellas();
+
+        app.guardarObjetos(ruta);
+
+        app.cargarObjetos(ruta);
+
+        System.out.println("=== DATOS RECUPERADOS ===");
+        app.mostrarHuellas();
     }
 }

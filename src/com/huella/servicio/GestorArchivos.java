@@ -9,42 +9,80 @@
  */
 package com.huella.servicio;
 
-import com.huella.modelo.HuellaDeCarbono;
+import com.huella.modelo.*;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GestorArchivos {
 
-    public void guardarHuellas(String ruta, List<HuellaDeCarbono> fuentes) throws IOException {
+    public void guardarObjetos(String ruta, List<HuellaDeCarbono> fuentes) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ruta))) {
 
             for (HuellaDeCarbono fuente : fuentes) {
-                String linea = fuente.obtenerDescripcion()
-                        + " | Huella de Carbono: " + fuente.calcularHuellaCarbono();
 
-                writer.write(linea);
+                if (fuente instanceof Edificio) {
+                    Edificio e = (Edificio) fuente;
+                    writer.write("EDIFICIO;" + e.getNombre() + ";" 
+                            + e.getConsumoEnergiaAnual() + ";" 
+                            + e.getFactorEmision());
+                } 
+                else if (fuente instanceof Coche) {
+                    Coche c = (Coche) fuente;
+                    writer.write("COCHE;" + c.getNombre() + ";" 
+                            + c.getConsumoCombustibleAnual() + ";" 
+                            + c.getFactorEmision());
+                } 
+                else if (fuente instanceof Bicicleta) {
+                    Bicicleta b = (Bicicleta) fuente;
+                    writer.write("BICICLETA;" + b.getNombre() + ";" 
+                            + b.getKilometrosAnuales());
+                }
+
                 writer.newLine();
             }
         }
     }
 
-    public List<String> leerDatos(String ruta) throws IOException {
-        List<String> lineas = new ArrayList<>();
+    public List<HuellaDeCarbono> leerObjetos(String ruta) throws IOException {
+        List<HuellaDeCarbono> lista = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(ruta))) {
             String linea;
 
             while ((linea = reader.readLine()) != null) {
-                lineas.add(linea);
+
+                String[] datos = linea.split(";");
+
+                switch (datos[0]) {
+
+                    case "EDIFICIO":
+                        lista.add(new Edificio(
+                                datos[1],
+                                Double.parseDouble(datos[2]),
+                                Double.parseDouble(datos[3])
+                        ));
+                        break;
+
+                    case "COCHE":
+                        lista.add(new Coche(
+                                datos[1],
+                                Double.parseDouble(datos[2]),
+                                Double.parseDouble(datos[3])
+                        ));
+                        break;
+
+                    case "BICICLETA":
+                        lista.add(new Bicicleta(
+                                datos[1],
+                                Double.parseDouble(datos[2])
+                        ));
+                        break;
+                }
             }
         }
 
-        return lineas;
+        return lista;
     }
 }
