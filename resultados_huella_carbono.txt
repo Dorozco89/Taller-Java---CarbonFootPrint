@@ -1,0 +1,3 @@
+Fuente de emisión: Edificio Central | Tipo: Edificio | Consumo Energía: 15000.0 | Factor Emisión: 0.5 | Huella de Carbono: 7500.0
+Fuente de emisión: Coche Familiar | Tipo: Coche | Consumo Combustible: 1200.0 | Factor Emisión: 2.3 | Huella de Carbono: 2760.0
+Fuente de emisión: Bicicleta Urbana | Tipo: Bicicleta | Kilómetros Anuales: 3000.0 | Huella de Carbono: 0.0
